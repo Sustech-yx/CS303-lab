@@ -1,0 +1,643 @@
+\documentclass[conference,compsoc]{IEEEtran}
+
+% *** CITATION PACKAGES ***
+%
+\ifCLASSOPTIONcompsoc
+  % IEEE Computer Society needs nocompress option
+  % requires cite.sty v4.0 or later (November 2003)
+  \usepackage[nocompress]{cite}
+\else
+  % normal IEEE
+  \usepackage{cite}
+\fi
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of the IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off
+% such as if a citation ever needs to be enclosed in parenthesis.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 5.0 (2009-03-20) and later if using hyperref.sty.
+% The latest version can be obtained at:
+% http://www.ctan.org/pkg/cite
+% The documentation is contained in the cite.sty file itself.
+%
+% Note that some packages require special options to format as the Computer
+% Society requires. In particular, Computer Society  papers do not use
+% compressed citation ranges as is done in typical IEEE papers
+% (e.g., [1]-[4]). Instead, they list every citation separately in order
+% (e.g., [1], [2], [3], [4]). To get the latter we need to load the cite
+% package with the nocompress option which is supported by cite.sty v4.0
+% and later.
+
+
+
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+  % \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation
+% can be obtained at: 
+% http://www.ctan.org/pkg/graphicx
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found at:
+% http://www.ctan.org/pkg/epslatex
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). The IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage[colorlinks, linkcolor=blue]{hyperref}
+
+
+\usepackage{epstopdf}
+
+\usepackage{graphicx}
+
+
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+\usepackage{algorithm, algpseudocode, float}
+\usepackage{lipsum}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\makeatletter
+\newenvironment{breakablealgorithm}
+  {% \begin{breakablealgorithm}
+   \begin{center}
+     \refstepcounter{algorithm}% New algorithm
+     \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+     \renewcommand{\caption}[2][\relax]{% Make a new \caption
+       {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+       \ifx\relax##1\relax % #1 is \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+       \else % #1 is not \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+       \fi
+       \kern2pt\hrule\kern2pt
+     }
+  }{% \end{breakablealgorithm}
+     \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+   \end{center}
+  }
+\makeatother
+
+\usepackage[colorlinks, linkcolor=blue]{hyperref}
+
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+\usepackage{array}
+
+
+\usepackage{url}
+
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+%
+% paper title
+% Titles are generally capitalized except for words such as a, an, and, as,
+% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
+% not capitalized unless they are the first or last word of the title.
+% Linebreaks \\ can be used within to get better formatting as desired.
+% Do not put math or special symbols in the title.
+\title{Heuristic solution of Capacitated Arc Routing Problem}
+
+
+% author names and affiliations
+% use a multiple column layout for up to three different
+% affiliations
+\author{\IEEEauthorblockN{Yi Xiang  11912013}
+\IEEEauthorblockA{Computer Science and Engineering\\
+Southern University of Science and Technology\\
+11912013@mail.sustech.edu.cn}}
+
+\maketitle
+\tableofcontents
+
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Preliminary}
+
+\subsection{Problem Description}
+CARP can be described as follows: consider an undirected connected graph $G=(V, E)$, with a vertex set $V$ and an edge set $E$ and a set of required edges (tasks) $T \subseteq E$. A fleet of identical vehicles, each of capacity Q, is based at a designated depot vertex $v_0 \in V$. Each edge $e \in E$ incurs a cost $c(e)$ when ever a vehicle travels over it or serves it (if it is a task). Each required edge $\tau \in T$ has a demand $d(\tau) > 0$ associated with it.
+
+The objective of CARP is to determine a set of routes for the vehicles to serve all the tasks with minimal costs while satisfying: a) Each route must start and end at $v_0$; b) The total demand serviced on each route must not exceed $Q$; c) Each task must be served exactly once. However, the corresponding edge can be traversed more than once.$^{[1]}$ CARP is a NP-hard problem. It was first developed by Golden (1981). A large amount of literature is currently based on the study of this problem. 
+
+\subsection{Problem Applications}
+The CARP problem has applications in many places, such as municipal garbage collection, winter road snow removal, road sprinkling, street sweeping, transmission line detection, etc. $^{[2]}$ The solution of CARP problem is of great significance to urban planning problems, and also promotes the development of heuristic solution of constrained problems.
+   
+\section{Methodology}
+\subsection{Notation}
+The main notations used are list as the following tables.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{@{}cc@{}}
+\toprule
+Symbol & Meaning                                                                         \\ \midrule
+V      & The vertices set in the graph.                                                  \\
+D      & \begin{tabular}[c]{@{}c@{}}The vertex represented by the \\ depot.\end{tabular} \\
+Q      & Vehicle capacity.                                                               \\
+C      & The total demand for all tasks.                                                 \\
+E      & The edges set in the graph.                                                     \\
+T      & The time limit for the problem.                                                 \\
+S      & \begin{tabular}[c]{@{}c@{}}The random seed used in the \\ problem.\end{tabular} \\ \bottomrule
+\end{tabular}
+\end{center}
+\caption{Main symbols that appear}
+\end{table}
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{@{}cc@{}}
+\toprule
+Function                                                               & Meaning                                                                                                                                                    \\ \midrule
+getSample()                                                            & \begin{tabular}[c]{@{}c@{}}Return the instance reading from\\ the data file.\end{tabular}                                                                  \\
+createSolution()                                                       & \begin{tabular}[c]{@{}c@{}}Return the initial solution\\ for the subsequent calculations.\end{tabular}                                                     \\
+calDistance(instance)                                                  & \begin{tabular}[c]{@{}c@{}}Generate the graph from the ins-\\ tance, and then calculate the \\ min-distance for each two vertices.\end{tabular}            \\
+\begin{tabular}[c]{@{}c@{}}show\_result(solution,\\ cost)\end{tabular} & \begin{tabular}[c]{@{}c@{}}Print the answer into the console\\ according to the standard format\\ provided.\end{tabular}                                   \\
+work()                                                                 & \begin{tabular}[c]{@{}c@{}}The body that executes all\\ functions. Do not return anything.\end{tabular}                                                    \\
+localSearch(state)                                                     & \begin{tabular}[c]{@{}c@{}}According to the existing status, \\ performing local-search to obtain\\ the new status. Return the new \\ status.\end{tabular} \\
+swap(state)                                                            & \begin{tabular}[c]{@{}c@{}}Performing the swap operation\\ to obtain the new state.\end{tabular}                                                           \\
+flip(state)                                                            & \begin{tabular}[c]{@{}c@{}}Performing the flip operation\\ to obtain the new state.\end{tabular}                                                           \\
+insert(state)                                                          & \begin{tabular}[c]{@{}c@{}}Performing the single-insert \\ operation to obation the new state.\end{tabular}                                                \\
+opt(state)                                                             & \begin{tabular}[c]{@{}c@{}}Performing the 2-opt operation \\ to obation the new state.\end{tabular}                                                        \\
+checkValid(solution)                                                   & \begin{tabular}[c]{@{}c@{}}Check whether the solution is \\ valid. Return a boolean.\end{tabular}                                                          \\
+calCost(solution)                                                      & \begin{tabular}[c]{@{}c@{}}Calculate the cost for the \\ solution. Return an integer.\end{tabular}                                                         \\ \bottomrule
+\end{tabular}
+\end{center}
+\caption{All functions that appear}
+\end{table}
+
+\subsection{Data Structure} 
+There are not many complex data structures are applied. The \emph{graph} is a 2-dim matrix which specfic the min-distance for each two vertex in the graph. The \emph{edge} is a Map which mapping the graph's edges to their demand and cost. This may be easy to calculate the demand and cost of a path. The \emph{solution} is a list for a solution. The first dimension is for the routes, and the second dimension is for the edges which contain the order for serving the tasks.
+
+\subsection{Model Design}
+First, I read and process the parameters passed in from the command line, resolve the data address, read the time limit and start timing, and obtain and apply the seed of random numbers. I pass the input data and obtain the key information for the problems like $V, D, Q, C, E$ as \emph{vertices, depot, capacity, total demand} and \emph{edges}. All the subsequent calculations will be based on the above information.
+
+Then, I apply a randomly path scanning and a greedy path scanning to obtain an initial solution for the heuristic solution. The randomly path scanning is to choose the next task completely randomly, and the greedy approach is to choose the closest task. The latter one may find a nice solution actually, in a very short time. However, it is not enough. So we may apply a heuristic algorithm.
+
+In this part, I use simulated annealing algorithm to get better results. Each round I took one of \textbf{flip, swap, insert, or 2-opt} to generate a new state based on the current state. As for which method to take, it is a matter of random probability to choose. The selection of hyperparameters will be further explained in the following chapters. In each new state I will calculate the \textbf{cost} directly, and compare it to the cost of the old state. If it is smaller than the old state, which means that it may be an better solution, then accept it. If is bigger than the old state, this accepts the new state with some probability $e^{\frac{\Delta cost}{T}}$, since it may lead me to a better solution in the following loops.
+
+It is worth noting that a series of illegal solutions may be generated during each state transition (\textbf{an invalid solution means that its capacity may overflow, or other conflicts with the problem constraints}). Such a solution would not get the grade, although its cost might be very low. However, it also plays an important role in the simulated annealing algorithm, because it is also possible to transform into a very good solution through a series of changes. Therefore, I will keep this illegal solution as part of the current state of \textbf{Local Search}, and how to use it will be shown in the algorithm details section in the next section.
+
+\subsection{Detail of Algorithms}
+For more detail of the algorithms, I may start from the algorithm for finding the initial solution. 
+
+\begin{breakablealgorithm}
+\begin{algorithmic}[1]
+\Require Instance
+\Ensure The initial solution
+\Function {createSolution}{}
+	\State free $\gets $instance.edges where $edges.demand \not=0 $
+	\State routes $\gets$ an empty list
+	\State pointer $\gets$ instance.depot
+	\State cost  $\gets$ 0
+	\While {free is not empty}
+		\State cap  $\gets$ 0
+		\State route $\gets$ an empty list
+		\While {True}
+			\If{free is empty}
+				\State break
+				\State tmp  $\gets$ free
+				\State sort(tmp) according to the distance between the edge and the pointer
+				\State flag  $\gets$ False
+				\For {edge in tmp}
+					\If {The edge(task) can be accept}
+						\State flag  $\gets$ True
+						\State route  $\gets$ edge
+						\State remove edge from free
+						\State update pointer  $\gets$ edge.end
+					\EndIf
+				\EndFor
+			\EndIf
+			
+			\If {flag is False}
+				\State break
+			\EndIf
+		\EndWhile
+		\State routes.add(route)
+		\State update pointer  $\gets$ instance.depot
+	
+	\EndWhile
+	\State\Return routes
+\EndFunction
+\end{algorithmic}
+\caption{The algorithm to get the initial solution}
+\label{alg1}
+\end{breakablealgorithm}
+
+More specifically, if you use a random algorithm, you don't need to sort line 13 and just randomly select the next edge in the remaining task. Since this method is not used in the final submission, it is not covered in the report.
+
+After processing the initial solution, I will try to obtain a better solution based on the initial solution. Here I use the simulated annealing algorithm, the details of the algorithm will be shown below.
+
+\begin{breakablealgorithm}
+\begin{algorithmic}[1]
+\Require The initial solution
+\Ensure The better solution
+\Function {localSearch}{state}
+	\State t  $\gets$ 0
+		\While {True}
+			\State T  $\gets$ $0.99^t$
+			\State new\_state, new\_cost = localSearch(state)
+			\If {checkValid(new\_state)}
+				\If {The current state is not valid}
+					\If {The new state is better}
+						\State accept the new state
+						\State state  $\gets$ new\_state
+					\EndIf
+				\EndIf
+			\Else
+				\State temp\_state  $\gets$ state
+			\EndIf
+			
+			\If {cost - new\_cost $\ge$ 0 or random() $\le$ $e^{\frac{cost-new\_cost}{T}}$}
+				\State state  $\gets$ new\_state
+			\EndIf
+		
+			\If {time limit exceed}
+				\State break
+			\EndIf
+		\EndWhile
+
+	\If {checkValid(state)}
+		\State\Return state
+	\Else
+		\State\Return temp\_state
+	\EndIf
+\EndFunction
+\end{algorithmic}
+\caption{The algorithm of Simulated annealing}
+\label{alg2}
+\end{breakablealgorithm}
+
+Specifically, the function \emph{random()} on line 16 will randomly generate a floating point number in the range $(0, 1)$. This will represents accepting a new solution with a certain probability. In lines 6 to 15, there is a process of selecting an invalid solution, and sometimes the invalid solution can be transformed into a good calid solution, so I will keep it and replace it when appropriate. In lines 23 through 26, I make a judgment call to make sure that the final result is valid.
+
+Then is the core function \emph{localSearch()}. Since it is divided into four parts, I will describe the principle of each part in the pseudo-code of the four functions. These four pseudocodes represent four operators, \textbf{swap, flip, single-insert and 2-opt.} In particular, the pseudocode function \emph{choice()} below means a random selection from the list in the argument. The function \emph{randint(i, j)} means an random integer in range $[i,j)$.
+
+The \textbf{swap} operator is to randomly choose two edges from two routes in the solution, and then exchanges them. After that we can get a new state from this state.
+
+\begin{breakablealgorithm}
+\begin{algorithmic}[1]
+\Require The current state
+\Ensure The new state
+\Function {swap}{state}
+\State route1 $\gets$ choice(state)
+\State route2 $\gets$ choice(state)
+\State edge1 $\gets$ choice(route1)
+\State edge2 $\gets$ choice(route2)
+\State edge1, edge2 $\gets$ edge2, edge1
+\State new\_state $\gets$ updated routes
+\State\Return new\_state
+\EndFunction
+\end{algorithmic}
+\caption{The algorithm of swap}
+\label{alg}
+\end{breakablealgorithm}
+
+The \textbf{flip} operator is to randomly choose an edge from a route in the solution. Then reverse the edge. For example, the edge (1, 0) will becomes (0, 1) after flip operator.
+
+\begin{breakablealgorithm}
+\begin{algorithmic}[1]
+\Require The current state
+\Ensure The new state
+\Function {flip}{state}
+\State route $\gets$ choice(state)
+\State i $\gets$ randint(0, $|$route$|$)
+\State edge $\gets$ route[i]
+\State new\_edge $\gets$ (edge[1], edge[0])
+\State new\_state $\gets$ updated routes
+\State\Return new\_state
+\EndFunction
+\end{algorithmic}
+\caption{The algorithm of flip}
+\label{alg}
+\end{breakablealgorithm}
+
+The \textbf{insert} operator is to randomly choose an edge from one route from the solution, and then randomly insert it into another route chosen randomly, at random position. After that we can obtain a new state from the old state.
+
+\begin{breakablealgorithm}
+\begin{algorithmic}[1]
+\Require The current state
+\Ensure The new state
+\Function {insert}{state}
+\State route1 $\gets$ choice(state)
+\State route1 $\gets$ choice(state)
+\State $i$ $\gets$ randint(0, $|$route1$|$)
+\State edge $\gets$ route[$i$]
+\State $j$ $\gets$ randint(0, $|$route2$|$)
+\State insert edge into route2 at position $j$
+\State delete edge in route1
+\State new\_state $\gets$ updated routes
+\State\Return new\_state
+\EndFunction
+\end{algorithmic}
+\caption{The algorithm of insert}
+\label{alg}
+\end{breakablealgorithm}
+
+The \textbf{2-opt} operator is to randomly choose a sequence of edges of one route. Then reverse them all. For example, there is a route $\{(1,9), (3,2), (1,4), (6,0)\}$. Then reverse it from position 1 to position 2. The result is $\{(1,9), (2,3), (4,1), (6,0)\}$.
+
+\begin{breakablealgorithm}
+\begin{algorithmic}[1]
+\Require The current state
+\Ensure The new state
+\Function {2-opt}{state}
+	\State route $\gets$ choice(state)
+	\State left $\gets$ randint(0, $|$route$|$)
+	\State right $\gets$ randint(0, $|$route$|$)
+	\State assert left $\le$ right
+	
+	\For {edge in route[left:right]}
+		\State perform flip operator on edge
+	\EndFor
+	
+	\State reverse route[left:right]
+	\State new\_state $\gets$ updated routes
+	\State\Return new\_state
+\EndFunction
+\end{algorithmic}
+\caption{The algorithm of 2-opt}
+\label{alg}
+\end{breakablealgorithm}
+
+\section{Empirical Verification}
+
+\subsection{Dataset}
+The dataset I use is from a open source data set for CARP problem. This data set is consists of four parts. \textbf{bccm$^{[3]}$, eglese$^{[4][5][6]}$, gdb$^{[7]}$ and kshs$^{[8]}$}. The test data provided by the platform is part of the above data set. 
+
+The data set are all in the same format. They are composed of the following parts: the description of the file, including the data name, the number of vehicles, the number of nodes, the number of demand side, the number of non-demand side and other basic information. Next is the start and end node information of each edge and their cost and demand. The format is nearly same as the data set provided from the plantform, so it is easy to deal with them.
+
+\subsection{Performance measure}
+Regarding how I use data sets to evaluate the performance of my programs, I choose to directly use my programs to compute the solutions to these data sets. Given time constraints time limit and random seeds to make the test more meaningful. Consider the efficiency of the test and the requirements of the question. I choose the lower bound of the time limit for each test case in the performance measure part. That is, the time limit for each test cases is $60 seconds$. And after testing, I obtain a table of the cost for each test cases. These results are listed in the appendix and compared with the exact solution. From the comprehensive results, my algorithm has achieved a good balance in efficiency, robustness and accuracy.
+
+The following is my introduction to the experimental environment. This project is written in \emph{Python} with editor \emph{Pycharm}. The main testing platform is \emph{Windows 10 Home Edition} (version 20H2) with Intel(R) Core(TM) i5-8300H CPU @ 2.30GHz 2.30 GHz of 4 cores and 8 threads, the memory is 16GB. And the develop platform is \emph{Ubuntu 16.04.6 LTS (GNU/Linux 4.4.0-151-generic x86\_64)} with Intel(R) Xeon(R) Gold 6278C CPU @ 2.60GHz with 8 cores and 16 threads, the memory is 16GB.
+
+Both of the \emph{python} version are 3.9 and the \emph{numpy} module's version is 1.20.1 .
+
+\subsection{Hyperparameters}
+The only hyperparameters I use in the algorithm is the different possbility to choose the four operators, swap, flip, insert and 2-opt. In the process of selecting the hyperparameters, I calculated the number of task edges affected by each operator on average. Finally, in order to make the expectation of task edges affected by each operator approximate to the same, I selected a group of hyperparameters. The calculation of this group of hyperparameters is as follows:
+
+\begin{equation}
+\begin{aligned}
+E(opt)&=acc\times n\\
+E(opt_1)=E(opt_2)&=E(opt_3)=E(opt_4)\\
+\sum acc &= 1
+\end{aligned}
+\end{equation}
+
+
+\subsection{Experimental results}
+The experimental results are shown in the appendix. In such table we can find that in the smaller test data, my algorithm can obtain the lower bound result sometimes. However, when occur large data set. My algorithm does not work well. In all data sets, I obtain 12 times lower bound totally, and other result are close to the lower bound. Compared with existing research, there is still a big gap.
+
+
+\subsection{Conclusion}
+In this project, I mainly studied the design and solution of heuristic algorithm deeply. In the experimental results, I can see that sometimes accurate solutions can be obtained from small data sets, while in large data sets, I can only approach the exact solutions. This may be due to the fact that the acquisition of the new state is not very rational, and the situation may not have been particularly well considered. For example, I didn't add double-insert and double-2-opt operators. The advantage of heuristic solution algorithm is that it can spend less time to get a relatively reliable solution, but its disadvantage is that the solution is not the global optimal, may be only the local optimal solution. In the experiment, I learned the simulated annealing algorithm in depth. The defect in my design lies in that every time I get a new state, I have to calculate cost completely from scratch, which is very uneconomical. The direction of future improvement lies in adding more reasonable operators and optimize the process of cost calculation.
+
+
+% use section* for acknowledgment
+\ifCLASSOPTIONcompsoc
+  % The Computer Society usually uses the plural form
+  \section*{Acknowledgments}
+\else
+  % regular IEEE prefers the singular form
+  \section*{Acknowledgment}
+\fi
+
+I would like to thank Mr. Zhao and Professor Yuan Bo for their wonderful classes and careful guidance. I would also like to thank the student teaching assistants for providing me with an excellent test platform.
+
+
+
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://mirror.ctan.org/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+\begin{thebibliography}{1}
+\bibitem{reference} He Rui, Project\_Carp, Southern University of Science and Technology, November 10, 2021. Accessed on: November 10, 2021. [Online]. Available: https://sakai.sustech.edu.cn/access/content/group/ee81f5ca-f01a-47f4-bbb6-ebeb1d96c0cf/Projects/Project\_Carp.zip
+\bibitem{reference} PENG Jin-huan, MA Hui-min.Review of Literature about Capacitated Arc Routing Problem,2015,38(01):63-66.DOI:10.13714/j.cnki.1002-3100.2015.01.019.
+\bibitem{reference}E. Benavent, V. Campos, A. Corberán and E. Mota (1992). The Capacitated Chinese Postman Problem: Lower Bounds. Networks 22 (7), pp. 669-690.
+\bibitem{reference}L.Y.O. Li (1992). Vehicle Routeing for Winter Gritting. PH. D. Thesis, Dept. of Management Science, Lancaster University.
+\bibitem{reference}L.Y.O. Li and R.W. Eglese (1996). An Interactive Algorithm for Vehicle Routeing for Winter-Gritting. Journal of the Operational Research Society 47, pp. 217-228.
+\bibitem{reference}J.M. Belenguer and E. Benavent (2003). A Cutting Plane Algorithm for the Capacitated Arc Routing Problem. Computers and Operations Research 30 (5), pp. 705-728.
+\bibitem{reference}B.L. Golden, J.S. DeArmon and E.K. Baker (1983). Computational Experiments with Algorithms for a Class of Routing Problems. Computers and Operations Research 10 (1), pp. 47-59.
+\bibitem{reference}M. Kiuchi, Y. Shinano, R. Hirabayashi and Y. Saruwatari (1995). An exact algorithm for the Capacitated Arc Routing Problem using Parallel Branch and Bound method. Abstracts of the 1995 Spring National Conference of the Oper. Res. Soc. of Japan, pp. 28-29.
+\bibitem{reference}Y. Yong, Study in Multi-Vehicle Capacitated Arc Routing Problem (MVCARP).College of Computer Science of Chongqing University,2008.
+•
+\end{thebibliography}
+\newpage
+\text{ }
+\newpage
+\begin{appendix}
+The following tables are the results for the test date set performance. And the meaning of the symbols are shown below.
+\begin{itemize}
+\item data: the name of the data set
+\item n: the number of the vertices
+\item e: the number of required edges
+\item LB: the lower bound of the data set (The lower bound is obtain from the paper$^{[9]}$).
+\item ps\_cost: the cost calculate by the path-scanning algorithm
+\item cost: the cost calculate by my algorithm in 60 seconds
+\end{itemize}
+
+The performance for the gdb data set. There are 11 data's cost obtain the lower bound of the data set.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+data           & n           & e           & LB           & ps\_cost     & cost         \\ \midrule
+\textbf{gdb1}  & \textbf{12} & \textbf{22} & \textbf{316} & \textbf{370} & \textbf{316} \\
+\textbf{gdb2}  & \textbf{12} & \textbf{12} & \textbf{339} & \textbf{402} & \textbf{339} \\
+\textbf{gdb3}  & \textbf{12} & \textbf{22} & \textbf{275} & \textbf{339} & \textbf{275} \\
+\textbf{gdb4}  & \textbf{11} & \textbf{19} & \textbf{287} & \textbf{350} & \textbf{287} \\
+gdb5           & 13          & 26          & 377          & 486          & 387          \\
+gdb6           & 12          & 22          & 298          & 390          & 324          \\
+gdb7           & 12          & 22          & 325          & 368          & 330          \\
+gdb10          & 27          & 46          & 275          & 309          & 289          \\
+\textbf{gdb11} & \textbf{27} & \textbf{51} & \textbf{395} & \textbf{465} & \textbf{395} \\
+gdb12          & 12          & 25          & 450          & 666          & 498          \\
+gdb13          & 22          & 45          & 536          & 589          & 558          \\
+\textbf{gdb14} & \textbf{13} & \textbf{23} & \textbf{100} & \textbf{123} & \textbf{100} \\
+\textbf{gdb15} & \textbf{10} & \textbf{28} & \textbf{58}  & \textbf{64}  & \textbf{58}  \\
+\textbf{gdb16} & \textbf{7}  & \textbf{21} & \textbf{127} & \textbf{143} & \textbf{127} \\
+\textbf{gdb17} & \textbf{7}  & \textbf{21} & \textbf{91}  & \textbf{95}  & \textbf{91}  \\
+\textbf{gdb18} & \textbf{8}  & \textbf{28} & \textbf{164} & \textbf{192} & \textbf{164} \\
+\textbf{gdb19} & \textbf{8}  & \textbf{28} & \textbf{55}  & \textbf{69}  & \textbf{55}  \\
+gdb20          & 9           & 36          & 121          & 139          & 123          \\
+gdb21          & 8           & 11          & 156          & 176          & 158          \\
+gdb22          & 11          & 22          & 200          & 209          & 201          \\
+gdb23          & 11          & 33          & 233          & 248          & 240          \\ \bottomrule
+\end{tabular}
+\caption{The performance for gdb data set.}
+\end{center}
+\end{table}
+
+Since I cannot find the lower bound for the kshs data set. So I just list my performance in the test.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+data  & n  & e  & ps\_cost & cost  \\ \midrule
+kshs1 & 8  & 15 & 16068    & 14729 \\
+kshs2 & 10 & 15 & 12048    & 9863  \\
+kshs3 & 6  & 15 & 12199    & 9524  \\
+kshs4 & 8  & 15 & 15248    & 12378 \\
+kshs5 & 8  & 15 & 15027    & 11151 \\
+kshs6 & 9  & 15 & 12913    & 10305 \\ \bottomrule
+\end{tabular}
+\caption{The performance for egl data set.}
+\end{center}
+\end{table}
+
+The performance for the bccm data set. There are 1 data's cost obatin the lower bound of the data set.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+data           & n           & e           & LB           & ps\_cost     & cost         \\ \midrule
+val1A          & 24          & 39          & 173          & 212          & 180          \\
+val1B          & 24          & 39          & 173          & 229          & 185          \\
+val1C          & 24          & 39          & 235          & 340          & 257          \\
+val2A          & 24          & 34          & 227          & 287          & 235          \\
+val2B          & 24          & 34          & 259          & 337          & 267          \\
+val2C          & 24          & 34          & 455          & 568          & 467          \\
+val3A          & 24          & 35          & 81           & 98           & 83           \\
+val3B          & 24          & 35          & 87           & 110          & 94           \\
+val3C          & 24          & 35          & 137          & 182          & 144          \\
+\textbf{val4A} & \textbf{41} & \textbf{69} & \textbf{400} & \textbf{504} & \textbf{400} \\
+val4B          & 41          & 69          & 412          & 526          & 430          \\
+val4C          & 41          & 69          & 428          & 595          & 476          \\
+val4D          & 41          & 69          & 520          & 710          & 568          \\
+val5A          & 34          & 65          & 423          & 550          & 428          \\
+val5B          & 34          & 65          & 446          & 559          & 450          \\
+val5C          & 34          & 65          & 469          & 567          & 481          \\
+val5D          & 34          & 65          & 571          & 806          & 627          \\
+val6A          & 31          & 50          & 223          & 281          & 235          \\
+val6B          & 31          & 50          & 231          & 282          & 233          \\
+val6C          & 31          & 50          & 311          & 424          & 327          \\
+val7A          & 40          & 66          & 279          & 370          & 305          \\
+val7B          & 40          & 66          & 283          & 357          & 307          \\
+val7C          & 40          & 66          & 333          & 430          & 355          \\
+val8A          & 30          & 63          & 386          & 508          & 389          \\
+val8B          & 30          & 63          & 395          & 523          & 417          \\
+val8C          & 30          & 63          & 517          & 647          & 601          \\
+val9A          & 50          & 92          & 323          & 372          & 330          \\
+val9B          & 50          & 92          & 326          & 417          & 340          \\
+val9C          & 50          & 92          & 332          & 433          & 349          \\
+val9D          & 50          & 92          & 382          & 483          & 432          \\
+val10A         & 50          & 97          & 428          & 507          & 440          \\
+val10B         & 50          & 97          & 436          & 526          & 450          \\
+val10C         & 50          & 97          & 446          & 560          & 472          \\
+val10D         & 50          & 97          & 524          & 638          & 576          \\ \bottomrule
+\end{tabular}
+\caption{The performance for bccm data set.}
+\end{center}
+\end{table}
+
+The performance for the eglese data set. There are no data's cost obatin the lower bound of the data set.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+data     & n   & e   & LB    & ps\_cost & cost  \\ \midrule
+egl-e1-A & 77  & 51  & 3517  & 4201     & 3552  \\
+egl-e1-B & 77  & 51  & 4436  & 3517     & 4671  \\
+egl-e1-C & 77  & 51  & 5453  & 7331     & 6020  \\
+egl-e2-A & 77  & 72  & 4994  & 6345     & 5245  \\
+egl-e2-B & 77  & 72  & 6249  & 8221     & 7141  \\
+egl-e2-C & 77  & 72  & 8114  & 11103    & 8806  \\
+egl-e3-A & 77  & 87  & 5869  & 7031     & 6293  \\
+egl-e3-B & 77  & 87  & 7646  & 10330    & 8330  \\
+egl-e3-C & 77  & 87  & 10119 & 13241    & 11164 \\
+egl-e4-A & 77  & 98  & 6372  & 7840     & 6764  \\
+egl-e4-B & 77  & 98  & 8809  & 10837    & 9585  \\
+egl-e4-C & 77  & 98  & 11276 & 14545    & 12334 \\
+egl-s1-A & 140 & 75  & 4992  & 6446     & 5388  \\
+egl-s1-B & 140 & 75  & 6210  & 8359     & 6848  \\
+egl-s1-C & 140 & 75  & 8310  & 10486    & 9518  \\
+egl-s2-A & 140 & 147 & 9780  & 12810    & 11084 \\
+egl-s2-B & 140 & 147 & 12886 & 17068    & 14839 \\
+egl-s2-C & 140 & 147 & 16221 & 20706    & 18258 \\
+egl-s3-A & 140 & 159 & 10025 & 12794    & 11396 \\
+egl-s3-B & 140 & 159 & 13554 & 18681    & 15478 \\
+egl-s3-C & 140 & 159 & 16969 & 20786    & 18992 \\
+egl-s4-A & 140 & 190 & 12027 & 16381    & 13862 \\
+egl-s4-B & 140 & 190 & 15933 & 21127    & 18089 \\
+egl-s4-C & 140 & 190 & 20179 & 25715    & 23315 \\ \bottomrule
+\end{tabular}
+\caption{The performance for eglese data set.}
+\end{center}
+\end{table}
+
+
+
+
+\end{appendix}
+
+\end{document}
+
+

@@ -1,6 +1,7 @@
 import numpy as npy
-from CARP_solver import debug
 
+
+debug = 0
 
 class Graph(object):
     def __init__(self, n, edges):

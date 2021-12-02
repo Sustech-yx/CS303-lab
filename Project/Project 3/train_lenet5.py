@@ -62,8 +62,8 @@ def train(model, train_loader, test_loader, optimizer, loss_fn):
 
         torch.save(model.state_dict(), args.checkpoint_dir + f'epoch-{epoch}.pth')
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     train_loader = torch.utils.data.DataLoader(
         datasets.MNIST(root='./data', train=True, download=False,
                        transform=transforms.Compose([

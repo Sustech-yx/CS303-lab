@@ -2,6 +2,7 @@ import time
 import torch
 from thop import profile
 
+
 def get_accuracy(model, test_loader, device):
     size = len(test_loader.dataset)
     model.eval()
@@ -13,6 +14,7 @@ def get_accuracy(model, test_loader, device):
             correct += (pred_y.argmax(1) == y).type(torch.float).sum().item()
     accuracy = correct / size
     return accuracy
+
 
 def get_infer_time(model, test_loader, device):
     size = len(test_loader.dataset)
@@ -29,5 +31,5 @@ def get_infer_time(model, test_loader, device):
 
 def get_macs_and_params(model, device):
     input = torch.randn(1, 1, 28, 28).to(device=device)
-    MACs, params = profile(model, inputs=(input,),verbose=True)
-    return MACs,params
+    MACs, params = profile(model, inputs=(input,), verbose=True)
+    return MACs, params

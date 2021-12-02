@@ -1,6 +1,3 @@
-import sys
-
-
 def show_result(solution, cost):
     print('s ', end='')
     for ind, route in enumerate(solution):

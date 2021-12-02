@@ -1,6 +1,7 @@
 from torch import nn
 import torch.nn.functional as F
 
+
 class YourNet(nn.Module):
     ###################### Begin #########################
     # You can create your own network here or copy our reference model (LeNet5)
