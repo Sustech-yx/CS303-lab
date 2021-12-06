@@ -11,6 +11,6 @@
 \contentsline {subsection}{\numberline {3.2}Performance measure}{4}{subsection.3.2}%
 \contentsline {subsection}{\numberline {3.3}Hyperparameters}{4}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Experimental results}{4}{subsection.3.4}%
-\contentsline {subsection}{\numberline {3.5}Conclusion}{4}{subsection.3.5}%
-\contentsline {section}{References}{4}{section*.3}%
+\contentsline {subsection}{\numberline {3.5}Conclusion}{5}{subsection.3.5}%
+\contentsline {section}{References}{5}{section*.3}%
 \contentsline {section}{Appendix}{6}{section*.4}%

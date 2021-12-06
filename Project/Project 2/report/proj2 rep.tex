@@ -223,8 +223,45 @@ In this part, I use simulated annealing algorithm to get better results. Each ro
 
 It is worth noting that a series of illegal solutions may be generated during each state transition (\textbf{an invalid solution means that its capacity may overflow, or other conflicts with the problem constraints}). Such a solution would not get the grade, although its cost might be very low. However, it also plays an important role in the simulated annealing algorithm, because it is also possible to transform into a very good solution through a series of changes. Therefore, I will keep this illegal solution as part of the current state of \textbf{Local Search}, and how to use it will be shown in the algorithm details section in the next section.
 
+Formally, the objective fundtion of CARP is:
+\begin{equation}
+\begin{aligned}
+minimize TC(s)\\
+\sum^m_{k=1}l_k=&|T|\\
+\tau_{k_1i_1}&\not= \tau_{k_2i_2}, \forall (k_1, i_1 \not=k_2,i_2)\\
+\tau_{k_1i_1} &\not=inv(\tau_{k_2i_2}), \forall(k_1, i_1 \not=k_2,i_2)\\
+\sum^{l_k}_{i=1}d(\tau_{ki})&\le Q,\forall k=1,2,...,m\\
+\tau_{ki} &\in T
+\end{aligned}
+\end{equation}
+
+The first line means minimize the total cost of all routes. The first to the third line imply that each task is served exactly once. The fifth line imply that there is capacity constraint. The sixth line imply the definition of $\tau$. $head(\tau)$ and $tail(\tau)$ represent the endpoints of task $\tau$ and specifies the direction from which $\tau$ is served, and $inv(\tau)$ represent the inverse direction. $^{[1]}$
+
 \subsection{Detail of Algorithms}
-For more detail of the algorithms, I may start from the algorithm for finding the initial solution. 
+For more detail of the algorithms, I may start from the algorithm for getting the shortest distance between any two nodes. 
+
+\begin{breakablealgorithm}
+\begin{algorithmic}[1]
+\Require Instance
+\Ensure The distance matrix for the instance
+\Function{calDistance}{instance}
+	\State graph $\gets$ build\_graph(instance.edge)
+	\State n $\gets$ $|$ instance.edge $|$
+	\For {k=1 to n}
+		\For {i=1 to n}
+			\For {j=1 to n}
+				\State graph[i][j] = min(graph[i][j], graph[i][k] + graph[k][j])
+			\EndFor
+		\EndFor
+	\EndFor
+\EndFunction
+\end{algorithmic}
+\caption{The algorithm to get the distance matrix. (Floyd)}
+\label{alg0}
+\end{breakablealgorithm}
+
+
+With the distance matrix, then I can use it to obatin an initial solution.
 
 \begin{breakablealgorithm}
 \begin{algorithmic}[1]
@@ -411,7 +448,7 @@ The dataset I use is from a open source data set for CARP problem. This data set
 The data set are all in the same format. They are composed of the following parts: the description of the file, including the data name, the number of vehicles, the number of nodes, the number of demand side, the number of non-demand side and other basic information. Next is the start and end node information of each edge and their cost and demand. The format is nearly same as the data set provided from the plantform, so it is easy to deal with them.
 
 \subsection{Performance measure}
-Regarding how I use data sets to evaluate the performance of my programs, I choose to directly use my programs to compute the solutions to these data sets. Given time constraints time limit and random seeds to make the test more meaningful. Consider the efficiency of the test and the requirements of the question. I choose the lower bound of the time limit for each test case in the performance measure part. That is, the time limit for each test cases is $60 seconds$. And after testing, I obtain a table of the cost for each test cases. These results are listed in the appendix and compared with the exact solution. From the comprehensive results, my algorithm has achieved a good balance in efficiency, robustness and accuracy.
+Regarding how I use data sets to evaluate the performance of my programs, I choose to directly use my programs to compute the solutions to these data sets. Given time constraints time limit and random seeds to make the test more meaningful. Consider the efficiency of the test and the requirements of the question. I choose the lower bound of the time limit for each test case in the performance measure part. I double the limit of time for more even results. That is, the time limit for each test cases is $120$ seconds. And after testing, I obtain a table of the cost for each test cases. These results are listed in the appendix and compared with the exact solution. From the comprehensive results, my algorithm has achieved a good balance in efficiency, robustness and accuracy.
 
 The following is my introduction to the experimental environment. This project is written in \emph{Python} with editor \emph{Pycharm}. The main testing platform is \emph{Windows 10 Home Edition} (version 20H2) with Intel(R) Core(TM) i5-8300H CPU @ 2.30GHz 2.30 GHz of 4 cores and 8 threads, the memory is 16GB. And the develop platform is \emph{Ubuntu 16.04.6 LTS (GNU/Linux 4.4.0-151-generic x86\_64)} with Intel(R) Xeon(R) Gold 6278C CPU @ 2.60GHz with 8 cores and 16 threads, the memory is 16GB.
 
@@ -434,7 +471,9 @@ The experimental results are shown in the appendix. In such table we can find th
 
 
 \subsection{Conclusion}
-In this project, I mainly studied the design and solution of heuristic algorithm deeply. In the experimental results, I can see that sometimes accurate solutions can be obtained from small data sets, while in large data sets, I can only approach the exact solutions. This may be due to the fact that the acquisition of the new state is not very rational, and the situation may not have been particularly well considered. For example, I didn't add double-insert and double-2-opt operators. The advantage of heuristic solution algorithm is that it can spend less time to get a relatively reliable solution, but its disadvantage is that the solution is not the global optimal, may be only the local optimal solution. In the experiment, I learned the simulated annealing algorithm in depth. The defect in my design lies in that every time I get a new state, I have to calculate cost completely from scratch, which is very uneconomical. The direction of future improvement lies in adding more reasonable operators and optimize the process of cost calculation.
+In this project, I mainly studied the design and solution of heuristic algorithm deeply. In the experimental results, I can see that sometimes accurate solutions can be obtained from small data sets, while in large data sets, I can only approach the exact solutions. This may be due to the fact that the acquisition of the new state is not very rational, and the situation may not have been particularly well considered. For example, I didn't add double-insert and double-2-opt operators. The advantage of heuristic solution algorithm is that it can spend less time to get a relatively reliable solution, but its disadvantage is that the solution is not the global optimal, may be only the local optimal solution. 
+
+In the experiment, I learned the simulated annealing algorithm in depth. The defect in my design lies in that every time I get a new state, I have to calculate cost completely from scratch, which is very uneconomical. The direction of future improvement lies in adding more reasonable operators and optimize the process of cost calculation. In addition, I will add multithreading to local Search in my approach. Consider using such application will lose a lot score since ni the final stage, due to the heavy pressure of online judge machine, the loss of 1 second for single thread will result in the loss of 8 seconds for eight threads (at that time, we did not know that there would be a retest at the end of the stage). So adding multiple threads to my approach for local search is another future work.
 
 
 % use section* for acknowledgment
@@ -484,7 +523,7 @@ I would like to thank Mr. Zhao and Professor Yuan Bo for their wonderful classes
 \bibitem{reference}B.L. Golden, J.S. DeArmon and E.K. Baker (1983). Computational Experiments with Algorithms for a Class of Routing Problems. Computers and Operations Research 10 (1), pp. 47-59.
 \bibitem{reference}M. Kiuchi, Y. Shinano, R. Hirabayashi and Y. Saruwatari (1995). An exact algorithm for the Capacitated Arc Routing Problem using Parallel Branch and Bound method. Abstracts of the 1995 Spring National Conference of the Oper. Res. Soc. of Japan, pp. 28-29.
 \bibitem{reference}Y. Yong, Study in Multi-Vehicle Capacitated Arc Routing Problem (MVCARP).College of Computer Science of Chongqing University,2008.
-•
+
 \end{thebibliography}
 \newpage
 \text{ }
@@ -497,7 +536,7 @@ The following tables are the results for the test date set performance. And the 
 \item e: the number of required edges
 \item LB: the lower bound of the data set (The lower bound is obtain from the paper$^{[9]}$).
 \item ps\_cost: the cost calculate by the path-scanning algorithm
-\item cost: the cost calculate by my algorithm in 60 seconds
+\item cost: the cost calculate by my algorithm in 120 seconds
 \end{itemize}
 
 The performance for the gdb data set. There are 11 data's cost obtain the lower bound of the data set.
