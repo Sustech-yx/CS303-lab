@@ -45,7 +45,7 @@ if __name__ == '__main__':
     MACs, params = get_macs_and_params(model, args.device)
 
     print("----------------------------------------------------------------")
-    print("| %10s | %8s | %14s | %9s | %7s |" % ("Model Name", "Accuracy", "Infer Time(ms)", "Params(M)", "MACs(M)"))
+    print("| %10s | %8s | %14s | %9s | %7s |" % ("Model Name", "Accuracy", "Infer Time(ms)", "MACs(M)", "Params(M)"))
     print("----------------------------------------------------------------")
     print("| %10s | %8.3f | %14.3f | %9.3f | %7.3f |" % ("LeNet-5", accuracy, infer_time * 1000, MACs / (1000 ** 2), params / (1000 ** 2)))
     print("----------------------------------------------------------------")
