@@ -6,8 +6,8 @@ class LeNet5(nn.Module):
     def __init__(self):
         super(LeNet5, self).__init__()
         # 1 input image channel, 6 output channels, 3x3 square conv kernel
-        self.conv1 = nn.Conv2d(1, 6, 3)
-        self.conv2 = nn.Conv2d(6, 16, 3)
+        self.conv1 = nn.Conv2d(1, 6, (3, 3))
+        self.conv2 = nn.Conv2d(6, 16, (3, 3))
         self.fc1 = nn.Linear(16 * 5 * 5, 120)  # 5x5 image dimension
         self.fc2 = nn.Linear(120, 84)
         self.fc3 = nn.Linear(84, 10)

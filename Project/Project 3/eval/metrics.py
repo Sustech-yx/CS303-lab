@@ -25,7 +25,7 @@ def get_infer_time(model, test_loader, device):
             X, y = X.to(device), y.to(device)
             pred_y = model(X)
         end = time.time()
-    infer_time = (end - start)/size
+    infer_time = (end - start) / size
     return infer_time
 
 

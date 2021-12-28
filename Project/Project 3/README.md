@@ -111,7 +111,7 @@ Download the project file `Project3.zip` and unzip it, then open the terminal in
     ----------------------------------------------------------------
     | Model Name | Accuracy | Infer Time(ms) | Params(M) | MACs(M) |
     ----------------------------------------------------------------
-    |    LeNet-5 |    0.980 |          0.055 |     0.206 |   0.060 |
+    |    LeNet-5 |    0.980 |          0.055 |     0.060 |   0.206 |
     ----------------------------------------------------------------
     ```
 
@@ -202,7 +202,7 @@ Regarding model compression, we give the following methods and references, but n
     |                | Reference Model (LeNet-5) | Compression Model (YourNet) | Your Score  |
     | :------------: | :-----------------------: | :-------------------------: | :---------: |
     |    Accuracy    |          a=0.980          |             a‘              | (a'-a)*2000 |
-    | Infer Time(ms) |          i=0.055          |             i’              | (i-i')/i*50 |
+    | Infer Time(ms) |          i=0.230          |             i’              | (i-i')/i*50 |
     |   Params(M)    |          p=0.206          |             p‘              | (p-p')/p'*2 |
     |    MACs(M)     |          m=0.060          |             m’              | (m-m')/m'*2 |
 
