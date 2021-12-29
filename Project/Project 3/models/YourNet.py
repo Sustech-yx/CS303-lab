@@ -13,8 +13,8 @@ class YourNet(nn.Module):
         self.relu1 = nn.ReLU()
         self.conv2 = nn.Conv2d(6, 8, (3, 3), stride=1)
         self.relu2 = nn.ReLU()
-        self.fc1 = nn.Linear(8 * 5 * 5, 100)  # 4x4 image dimension
-        self.fc3 = nn.Linear(100, 10)
+        self.fc1 = nn.Linear(8 * 5 * 5, 80)  # 4x4 image dimension
+        self.fc3 = nn.Linear(80, 10)
 
     def forward(self, x):
         x = F.max_pool2d(self.relu1(self.conv1(x)), (2, 2))

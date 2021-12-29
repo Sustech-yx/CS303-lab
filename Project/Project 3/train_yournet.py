@@ -23,7 +23,7 @@ parser.add_argument('--epoch-end', type=int, required=True)
 
 args = parser.parse_args()
 local = 1
-LEARNING_RATE = 0.1
+LEARNING_RATE = 0.15
 
 
 # --------------- Loading ---------------
