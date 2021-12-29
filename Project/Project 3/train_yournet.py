@@ -88,7 +88,7 @@ def train(model, train_loader, test_loader, optimizer, loss_fn):
     for epoch in range(args.epoch_start, args.epoch_end):
         cnt += 1
         if cnt > train_cnt // 2:
-            optimizer = torch.optim.SGD(model.parameters(), lr=LEARNING_RATE / 10)
+            optimizer = torch.optim.SGD(model.parameters(), lr=LEARNING_RATE / 3)
         print(f"Epoch {epoch}\n-------------------------------")
         size = len(train_loader.dataset)
         model.train()
@@ -105,9 +105,9 @@ def train(model, train_loader, test_loader, optimizer, loss_fn):
             loss.backward()
             optimizer.step()
 
-            if batch_idx % 100 == 0:
-                loss, current = loss.item(), batch_idx * len(X)
-                print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+            # if batch_idx % 100 == 0:
+            #     loss, current = loss.item(), batch_idx * len(X)
+            #     print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
 
         accuracy = get_accuracy(model, test_loader, args.device)
         print("Accuracy: %.3f" % accuracy)

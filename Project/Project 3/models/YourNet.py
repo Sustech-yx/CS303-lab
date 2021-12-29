@@ -9,18 +9,18 @@ class YourNet(nn.Module):
     def __init__(self):
         super(YourNet, self).__init__()
         # 1 input image channel, 6 output channels, 3x3 square conv kernel
-        self.conv1 = nn.Conv2d(1, 6, (3, 3), stride=1)
+        self.conv1 = nn.Conv2d(1, 3, (3, 3), stride=1)
         self.relu1 = nn.ReLU()
-        self.conv2 = nn.Conv2d(6, 8, (3, 3), stride=1)
+        self.conv2 = nn.Conv2d(3, 6, (3, 3), stride=1)
         self.relu2 = nn.ReLU()
-        self.fc1 = nn.Linear(8 * 5 * 5, 80)  # 4x4 image dimension
-        self.fc3 = nn.Linear(80, 10)
+        # self.fc1 = nn.Linear(1014, 300)  # 4x4 image dimension
+        self.fc3 = nn.Linear(150, 10)
 
     def forward(self, x):
         x = F.max_pool2d(self.relu1(self.conv1(x)), (2, 2))
         x = F.max_pool2d(self.relu2(self.conv2(x)), (2, 2))
         x = x.view(-1, int(x.nelement() / x.shape[0]))
-        x = F.relu(self.fc1(x))
+        # x = F.relu(self.fc1(x))
         x = self.fc3(x)
         return x
 
